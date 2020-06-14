@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     {}
   );
   website.associate = function (models) {
-    homepage.belongsTo(models.homepage);
+    website.belongsTo(models.homepage);
   };
   return website;
 };

@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   userTag.associate = function (models) {
     userTag.belongsTo(models.tag);
-    userTag.belingsTo(models.user);
+    userTag.belongsTo(models.user);
   };
   return userTag;
 };
