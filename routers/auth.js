@@ -1,0 +1,55 @@
+const { Router } = require("express");
+const { toJWT, toData } = require("../auth/jwt");
+const bcrypt = require("bcrypt");
+const User = require("../models").user;
+
+const router = new Router();
+
+router.post("/login", async (request, response, next) => {
+  try {
+    const { email, password } = request.body;
+    if (!email || !password) {
+      return response
+        .status(400)
+        .send("Please supply a valid email and password");
+    }
+    const user = await User.findOne({ where: { email } });
+    if (!user || !bcrypt.compareSync(password, user.password)) {
+      return response
+        .status(400)
+        .send("No user with that email/password is incorrect.");
+    }
+    delete user.dataValues["password"];
+    const token = toJWT({ userId: user.id });
+    return response.status(200).send({ token, ...user.dataValues });
+  } catch (error) {
+    console.log(`Error: ${error}`);
+  }
+});
+
+router.post("/signup", async (request, response) => {
+  const { email, password, name, role } = request.body;
+  if (!email || !name || !password || !role) {
+    return response.status(400).send("Please supply all sign up information.");
+  }
+  try {
+    const newUser = await User.create({
+      email,
+      password: bcrypt.hashSync(password, 10),
+      name,
+      role,
+    });
+    delete newUser.dataValues["password"];
+    const token = toJWT({ userId: newUser.id });
+    response.status(201).send({ token, ...newUser.dataValues });
+  } catch (error) {
+    if (error.name === "SequelizeUniqueConstraintError") {
+      return response
+        .status(400)
+        .send("There is an existing account with this email");
+    }
+    return response.status(400).send("Something went wrong");
+  }
+});
+
+module.exports = router;
