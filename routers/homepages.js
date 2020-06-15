@@ -21,7 +21,7 @@ router.get("/homepages/:id", async (request, response, next) => {
   try {
     const homepageId = request.params.id;
     const homepage = await Homepage.findByPk(homepageId, {
-      include: { model: User, include: [Tag] },
+      include: [{ model: User, include: [Tag] }, { model: Website }],
     });
     response.status(200).send(homepage);
   } catch (error) {
