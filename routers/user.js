@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const User = require("../models").user;
+const User = require("../models/").user;
 const { Router } = require("express");
 
 const router = new Router();
@@ -12,7 +12,7 @@ router.post("/signup", async (request, response) => {
   try {
     const newUser = await User.create({
       email,
-      password: bycrypt.hashSynch(password, 10),
+      password: bcrypt.hashSync(password, 10),
       name,
       role,
     });
