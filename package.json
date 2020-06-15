@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "dev": "npx nodemon index.js",
     "initdev": "npm run createDB && npm run migrate && npm run seed"
   },
@@ -15,9 +15,12 @@
     "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "jest": "^26.0.1",
+    "mysql2": "^2.1.0",
     "nodemon": "^2.0.4",
     "pg": "^8.2.1",
     "sequelize": "^5.21.12",
-    "sequelize-cli": "^5.5.1"
+    "sequelize-cli": "^5.5.1",
+    "supertest": "^4.0.2"
   }
 }
