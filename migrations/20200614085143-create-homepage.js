@@ -10,7 +10,6 @@ module.exports = {
       },
       byline: {
         type: Sequelize.TEXT,
-        allowNull: false,
       },
       location: {
         type: Sequelize.STRING,
@@ -23,7 +22,6 @@ module.exports = {
       },
       idea: {
         type: Sequelize.BOOLEAN,
-        allowNull: false,
       },
       createdAt: {
         allowNull: false,
