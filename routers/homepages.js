@@ -23,7 +23,11 @@ router.get("/homepages/:id", async (request, response, next) => {
     const homepage = await Homepage.findByPk(homepageId, {
       include: [{ model: User, include: [Tag] }, { model: Website }],
     });
-    response.status(200).send(homepage);
+    if (!homepage) {
+      return response.status(404).send("Homepage not found");
+    } else {
+      response.status(200).send(homepage);
+    }
   } catch (error) {
     next(error);
   }
