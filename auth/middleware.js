@@ -4,7 +4,7 @@ const { response } = require("express");
 
 async function auth(request, response, next) {
   const auth =
-    req.headers.authorization && req.headers.authorization.split(" ");
+    request.headers.authorization && request.headers.authorization.split(" ");
   if (auth && auth[0] === "Bearer" && auth[1]) {
     try {
       const data = toData(auth[1]);
