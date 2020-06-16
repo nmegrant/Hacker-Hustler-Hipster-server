@@ -1,0 +1,25 @@
+const User = require("../models").user;
+const { toData } = require("./jwt");
+const { response } = require("express");
+
+async function auth(request, response, next) {
+  const auth =
+    req.headers.authorization && req.headers.authorization.split(" ");
+  if (auth && auth[0] === "Bearer" && auth[1]) {
+    try {
+      const data = toData(auth[1]);
+      const user = await User.findByPk(data.userId);
+      if (!user) {
+        return response.status(404).send("Ne user found");
+      }
+      request.user = user;
+      return next();
+    } catch (error) {
+      response.send(400).send("Invalid JWT token");
+    }
+  } else {
+    return request.status(401).send("Please supply valid credentials");
+  }
+}
+
+module.export = auth;
