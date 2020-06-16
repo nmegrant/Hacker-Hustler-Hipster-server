@@ -10,7 +10,7 @@ async function auth(request, response, next) {
       const data = toData(auth[1]);
       const user = await User.findByPk(data.userId);
       if (!user) {
-        return response.status(404).send("Ne user found");
+        return response.status(404).send("No user found");
       }
       request.user = user;
       return next();
@@ -22,4 +22,4 @@ async function auth(request, response, next) {
   }
 }
 
-module.export = auth;
+module.exports = auth;

@@ -54,7 +54,7 @@ router.post("/signup", async (request, response) => {
 
 router.get("/user", authMiddleware, async (request, response) => {
   delete request.user.dataValues["password"];
-  response.statuse(200).send({ ...request.user.dataValuese });
+  response.status(200).send({ ...request.user.dataValuese });
 });
 
 module.exports = router;
