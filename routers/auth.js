@@ -2,7 +2,7 @@ const { Router } = require("express");
 const { toJWT, toData } = require("../auth/jwt");
 const bcrypt = require("bcrypt");
 const User = require("../models").user;
-
+const authMiddleware = require("../auth/middleware");
 const router = new Router();
 
 router.post("/login", async (request, response, next) => {
@@ -50,6 +50,11 @@ router.post("/signup", async (request, response) => {
     }
     return response.status(400).send("Something went wrong");
   }
+});
+
+router.get("/user", authMiddleware, async (request, response) => {
+  delete request.user.dataValues["password"];
+  response.status(200).send({ ...request.user.dataValues });
 });
 
 module.exports = router;
