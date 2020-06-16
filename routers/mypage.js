@@ -8,17 +8,14 @@ const authMiddleware = require("../auth/middleware");
 
 const router = new Router();
 
-// router.patch("/homepages/:id", async (request, response, next) => {
-//   try {
-//     const homepage = await Homepage.findByPk(request.params.id);
-//     if (!homepage) {
-//       return response.status(404).send("Homepage does not exist");
-//     }
-//     await homepage.update({});
-//     response.status(200).send(homepage);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+router.patch("/mypage", authMiddleware, async (request, response, next) => {
+  try {
+    //one end point to update homepage
+    //another endpoint to add websites
+    //athird to add skills
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = router;
