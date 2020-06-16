@@ -10,10 +10,17 @@ const router = new Router();
 
 router.patch("/mypage", authMiddleware, async (request, response, next) => {
   try {
-    //one end point to update homepage
-    console.log(request.body);
-    //another endpoint to add websites
-    //athird to add skills
+    //Endpoint to update homepage
+    const { bio, experience, byline, location, idea } = request.body;
+    const homepage = await Homepage.findOne({
+      where: { userId: request.user.id },
+    });
+    if (!homepage) {
+      return response.status(404).send("Homeage not found");
+    }
+    await homepage.update({ bio, experience, byline, location, idea });
+    //Endpoint to add websites
+    //Endpoint to add skill
   } catch (error) {
     next(error);
   }
