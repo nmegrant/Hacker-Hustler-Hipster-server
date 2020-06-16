@@ -11,6 +11,7 @@ const router = new Router();
 router.patch("/mypage", authMiddleware, async (request, response, next) => {
   try {
     //one end point to update homepage
+    console.log(request.body);
     //another endpoint to add websites
     //athird to add skills
   } catch (error) {
