@@ -21,9 +21,7 @@ router.get("/ideas", authMiddleware, async (request, response, next) => {
 router.post("/ideas", authMiddleware, async (request, response, next) => {
   const { title, description, hacker, hipster, hustler } = request.body;
   try {
-    console.log(request.user.id);
-    console.log(request.body);
-    const newIdea = Idea.create({
+    const newIdea = await Idea.create({
       title,
       description,
       hacker,
@@ -31,7 +29,7 @@ router.post("/ideas", authMiddleware, async (request, response, next) => {
       hipster,
       userId: request.user.id,
     });
-    response.status(201).send(newIdea);
+    return response.status(201).send({ ...newIdea.dataValues });
   } catch (error) {
     next(error);
   }
