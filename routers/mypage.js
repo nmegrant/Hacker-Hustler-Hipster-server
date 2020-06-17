@@ -24,4 +24,23 @@ router.patch("/mypage", authMiddleware, async (request, response, next) => {
   }
 });
 
+router.get("/mypage", authMiddleware, async (request, response, next) => {
+  try {
+    const homepage = await Homepage.findOne(
+      {
+        where: { userId: request.user.id },
+      },
+      {
+        include: [{ model: User, include: [Tag] }, { model: Website }],
+      }
+    );
+    if (!homepage) {
+      return response.status(404).send("Homepage not found");
+    }
+    response.send(200).send(homepage);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
