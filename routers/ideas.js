@@ -9,7 +9,7 @@ router.get("/ideas", authMiddleware, async (request, response, next) => {
     const ideas = await Idea.findAll({
       where: { userId: request.user.id },
     });
-    if (!idea) {
+    if (!ideas) {
       return response.status(404).send("Homepage not found");
     }
     response.status(200).send(ideas);
