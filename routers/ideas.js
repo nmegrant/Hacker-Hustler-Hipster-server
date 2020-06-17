@@ -18,4 +18,23 @@ router.get("/ideas", authMiddleware, async (request, response, next) => {
   }
 });
 
+router.post("/ideas", authMiddleware, async (request, response, next) => {
+  const { title, description, hacker, hipster, hustler } = request.body;
+  try {
+    console.log(request.user.id);
+    console.log(request.body);
+    const newIdea = Idea.create({
+      title,
+      description,
+      hacker,
+      hustler,
+      hipster,
+      userId: request.user.id,
+    });
+    response.status(201).send(newIdea);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
