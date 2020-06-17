@@ -26,6 +26,7 @@ router.get("/homepages/:id", async (request, response, next) => {
     if (!homepage) {
       return response.status(404).send("Homepage not found");
     } else {
+      delete homepage.user.dataValues["password"];
       response.status(200).send(homepage);
     }
   } catch (error) {
