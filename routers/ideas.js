@@ -35,4 +35,14 @@ router.post("/ideas", authMiddleware, async (request, response, next) => {
   }
 });
 
+router.delete("/ideas", authMiddleware, async (request, response, next) => {
+  try {
+    const idea = await Idea.findByPk(request.body.id);
+    await idea.destroy();
+    return response.status(204).send("Idea deleted");
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

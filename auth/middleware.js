@@ -18,7 +18,7 @@ async function auth(request, response, next) {
       response.send(400).send("Invalid JWT token");
     }
   } else {
-    return request.status(401).send("Please supply valid credentials");
+    return response.status(401).send("Please supply valid credentials");
   }
 }
 
