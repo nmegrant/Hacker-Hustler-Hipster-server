@@ -4,6 +4,7 @@ const PORT = process.env.PORT || 4000;
 const homepages = require("./routers/homepages");
 const auth = require("./routers/auth");
 const mypage = require("./routers/mypage");
+const websites = require("./routers/websites");
 
 const bodyParserMiddleWare = express.json();
 app.use(bodyParserMiddleWare);
@@ -14,6 +15,7 @@ app.use(corsMiddleWare());
 app.use(homepages);
 app.use(auth);
 app.use(mypage);
+app.use(websites);
 
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
