@@ -2,6 +2,7 @@ const { Router } = require("express");
 const { toJWT, toData } = require("../auth/jwt");
 const bcrypt = require("bcrypt");
 const User = require("../models").user;
+const Homepage = require("../models").homepage;
 const authMiddleware = require("../auth/middleware");
 const router = new Router();
 
@@ -39,6 +40,11 @@ router.post("/signup", async (request, response) => {
       name,
       role,
     });
+    const newHomepage = await Homepage.create({
+      userId: newUser.id,
+    });
+
+    console.log(newHomepage);
     delete newUser.dataValues["password"];
     const token = toJWT({ userId: newUser.id });
     response.status(201).send({ token, ...newUser.dataValues });
