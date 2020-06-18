@@ -17,9 +17,10 @@ router.post("/websites", authMiddleware, async (request, response, next) => {
     if (!homepage) {
       return response.status(404).send("Homeage not found");
     }
-    urls.map(async (url) => {
+    const newWebsites = urls.map(async (url) => {
       await Website.create({ homepageId: homepage.id, url });
     });
+    console.log(newWebsites);
     response.status(201).send("New websites added");
   } catch (error) {
     next(error);
