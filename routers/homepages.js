@@ -1,4 +1,4 @@
-const { Router } = require("express");
+const { Router, query } = require("express");
 const Homepage = require("../models").homepage;
 const User = require("../models").user;
 const Tag = require("../models").tag;
@@ -11,7 +11,25 @@ router.get("/homepages", async (request, response, next) => {
     const homepages = await Homepage.findAll({
       include: [{ model: User, include: [Tag] }],
     });
-    response.status(200).send(homepages);
+
+    if (request.query.skills) {
+      // const filteredHomepages = await Tag.findAll({
+      //   where: {
+      //     skill: {
+      //       $in: request.query.skills,
+      //     },
+      //   },
+      // });
+      const filteredHomepages = homepages.filter(
+        (homepage) =>
+          homepage.user.tags.filter((tag) =>
+            request.query.skills.includes(tag.skill)
+          ).length > 0
+      );
+      return response.status(200).send(filteredHomepages);
+    } else {
+      return response.status(200).send(homepages);
+    }
   } catch (error) {
     next(error);
   }
