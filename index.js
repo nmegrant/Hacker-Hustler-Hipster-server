@@ -6,6 +6,7 @@ const auth = require("./routers/auth");
 const mypage = require("./routers/mypage");
 const websites = require("./routers/websites");
 const ideas = require("./routers/ideas");
+const skills = require("./routers/skills");
 
 const bodyParserMiddleWare = express.json();
 app.use(bodyParserMiddleWare);
@@ -18,6 +19,7 @@ app.use(auth);
 app.use(mypage);
 app.use(websites);
 app.use(ideas);
+app.use(skills);
 
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
