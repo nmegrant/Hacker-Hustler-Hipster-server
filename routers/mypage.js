@@ -16,8 +16,14 @@ router.patch("/mypage", authMiddleware, async (request, response, next) => {
     if (!homepage) {
       return response.status(404).send("Homeage not found");
     }
-    await homepage.update({ bio, experience, byline, location, idea });
-    return response.status(200).send("Homepage info updated");
+    const newHomepage = await homepage.update({
+      bio,
+      experience,
+      byline,
+      location,
+      idea,
+    });
+    return response.status(200).send({ ...newHomepage.dataValues });
   } catch (error) {
     next(error);
   }
