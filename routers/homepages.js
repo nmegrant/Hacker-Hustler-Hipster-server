@@ -20,9 +20,10 @@ router.get("/homepages", async (request, response, next) => {
   }
 });
 
-router.get("/homepages/skills", async (request, response, next) => {
+router.get("/homepages/filters", async (request, response, next) => {
   try {
-    if (request.query.skills.length) {
+    let userIds_Tags;
+    if (request.query.skills) {
       const filteredTags = await Tag.findAll({
         where: {
           skill: {
@@ -40,62 +41,53 @@ router.get("/homepages/skills", async (request, response, next) => {
         },
       });
 
-      const userIds = await filteredUserTags.map(
-        (userTag) => userTag.dataValues.userId
+      userIds_Tags = await filteredUserTags.map((userTag) =>
+        Number(userTag.dataValues.userId)
       );
-
-      const filteredHomepages = await Homepage.findAll({
-        include: [{ model: User, include: [Tag] }],
-        where: {
-          userId: {
-            [Op.in]: userIds,
-          },
-        },
-      });
-
-      return response.status(200).send(filteredHomepages);
     }
-  } catch (error) {
-    next(error);
-  }
-});
 
-router.get("/homepages/role", async (request, response, next) => {
-  try {
-    if (request.query.role.length) {
+    let userIds_Role;
+    if (request.query.role) {
       const filteredUsers = await User.findAll({
         where: {
           role: request.query.role,
         },
       });
-      const userIds = await filteredUsers.map((user) => user.dataValues.id);
-
-      const filteredHomepages = await Homepage.findAll({
-        include: [{ model: User, include: [Tag] }],
-        where: {
-          userId: {
-            [Op.in]: userIds,
-          },
-        },
-      });
-      return response.status(200).send(filteredHomepages);
+      userIds_Role = await filteredUsers.map((user) =>
+        Number(user.dataValues.id)
+      );
     }
-  } catch (error) {
-    next(error);
-  }
-});
 
-router.get("/homepages/idea", async (request, response, next) => {
-  try {
+    const clauses = {};
+
+    if (userIds_Role && userIds_Tags) {
+      const userIds = userIds_Role.filter((role_id) =>
+        userIds_Tags.includes(role_id)
+      );
+      clauses["userId"] = {
+        [Op.in]: userIds,
+      };
+    } else if (userIds_Tags) {
+      clauses["userId"] = {
+        [Op.in]: userIds_Tags,
+      };
+    } else if (userIds_Role) {
+      clauses["userId"] = {
+        [Op.in]: userIds_Role,
+      };
+    }
+
     if (request.query.idea) {
-      const filteredHomepages = await Homepage.findAll({
-        include: [{ model: User, include: [Tag] }],
-        where: {
-          idea: request.query.idea,
-        },
-      });
-      return response.status(200).send(filteredHomepages);
+      clauses["idea"] = request.query.idea;
     }
+    console.log(clauses);
+
+    const filteredHomepages = await Homepage.findAll({
+      include: [{ model: User, include: [Tag] }],
+      where: clauses,
+    });
+
+    return response.status(200).send(filteredHomepages);
   } catch (error) {
     next(error);
   }
