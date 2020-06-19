@@ -78,8 +78,6 @@ router.get("/homepages/role", async (request, response, next) => {
           },
         },
       });
-      console.log(filteredHomepages);
-
       return response.status(200).send(filteredHomepages);
     }
   } catch (error) {
@@ -89,14 +87,13 @@ router.get("/homepages/role", async (request, response, next) => {
 
 router.get("/homepages/idea", async (request, response, next) => {
   try {
-    if (request.query.idea.length) {
+    if (request.query.idea) {
       const filteredHomepages = await Homepage.findAll({
         include: [{ model: User, include: [Tag] }],
         where: {
-          idea: request.params.idea,
+          idea: request.query.idea,
         },
       });
-
       return response.status(200).send(filteredHomepages);
     }
   } catch (error) {
