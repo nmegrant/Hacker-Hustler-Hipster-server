@@ -62,7 +62,7 @@ router.get("/homepages/skills", async (request, response, next) => {
 
 router.get("/homepages/role", async (request, response, next) => {
   try {
-    if (request.query.role) {
+    if (request.query.role.length) {
       const filteredUsers = await User.findAll({
         where: {
           role: request.query.role,
@@ -79,6 +79,46 @@ router.get("/homepages/role", async (request, response, next) => {
         },
       });
       console.log(filteredHomepages);
+
+      return response.status(200).send(filteredHomepages);
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/homepages/idea", async (request, response, next) => {
+  try {
+    if (request.query.idea.length) {
+      const filteredTags = await Tag.findAll({
+        where: {
+          skill: {
+            [Op.in]: request.query.skills,
+          },
+        },
+      });
+      const tagIds = await filteredTags.map((tag) => tag.dataValues.id);
+
+      const filteredUserTags = await UserTag.findAll({
+        where: {
+          tagId: {
+            [Op.in]: tagIds,
+          },
+        },
+      });
+
+      const userIds = await filteredUserTags.map(
+        (userTag) => userTag.dataValues.userId
+      );
+
+      const filteredHomepages = await Homepage.findAll({
+        include: [{ model: User, include: [Tag] }],
+        where: {
+          userId: {
+            [Op.in]: userIds,
+          },
+        },
+      });
 
       return response.status(200).send(filteredHomepages);
     }
