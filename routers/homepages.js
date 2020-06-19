@@ -14,6 +14,14 @@ router.get("/homepages", async (request, response, next) => {
     const homepages = await Homepage.findAll({
       include: [{ model: User, include: [Tag] }],
     });
+    return response.status(200).send(homepages);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/homepages/skills", async (request, response, next) => {
+  try {
     if (request.query.skills) {
       const filteredTags = await Tag.findAll({
         where: {
@@ -46,8 +54,6 @@ router.get("/homepages", async (request, response, next) => {
       });
 
       return response.status(200).send(filteredHomepages);
-    } else {
-      return response.status(200).send(homepages);
     }
   } catch (error) {
     next(error);
