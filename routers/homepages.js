@@ -3,6 +3,9 @@ const Homepage = require("../models").homepage;
 const User = require("../models").user;
 const Tag = require("../models").tag;
 const Website = require("../models").website;
+const UserTag = require("../models").userTag;
+
+const { Op } = require("sequelize");
 
 const router = new Router();
 
@@ -11,21 +14,37 @@ router.get("/homepages", async (request, response, next) => {
     const homepages = await Homepage.findAll({
       include: [{ model: User, include: [Tag] }],
     });
-
     if (request.query.skills) {
-      // const filteredHomepages = await Tag.findAll({
-      //   where: {
-      //     skill: {
-      //       $in: request.query.skills,
-      //     },
-      //   },
-      // });
-      const filteredHomepages = homepages.filter(
-        (homepage) =>
-          homepage.user.tags.filter((tag) =>
-            request.query.skills.includes(tag.skill)
-          ).length > 0
+      const filteredTags = await Tag.findAll({
+        where: {
+          skill: {
+            [Op.in]: request.query.skills,
+          },
+        },
+      });
+      const tagIds = await filteredTags.map((tag) => tag.dataValues.id);
+
+      const filteredUserTags = await UserTag.findAll({
+        where: {
+          tagId: {
+            [Op.in]: tagIds,
+          },
+        },
+      });
+
+      const userIds = await filteredUserTags.map(
+        (userTag) => userTag.dataValues.userId
       );
+
+      const filteredHomepages = await Homepage.findAll({
+        include: [{ model: User, include: [Tag] }],
+        where: {
+          userId: {
+            [Op.in]: userIds,
+          },
+        },
+      });
+
       return response.status(200).send(filteredHomepages);
     } else {
       return response.status(200).send(homepages);
