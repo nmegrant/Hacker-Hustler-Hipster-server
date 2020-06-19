@@ -22,7 +22,7 @@ router.get("/homepages", async (request, response, next) => {
 
 router.get("/homepages/skills", async (request, response, next) => {
   try {
-    if (request.query.skills) {
+    if (request.query.skills.length) {
       const filteredTags = await Tag.findAll({
         where: {
           skill: {
@@ -52,6 +52,33 @@ router.get("/homepages/skills", async (request, response, next) => {
           },
         },
       });
+
+      return response.status(200).send(filteredHomepages);
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/homepages/role", async (request, response, next) => {
+  try {
+    if (request.query.role) {
+      const filteredUsers = await User.findAll({
+        where: {
+          role: request.query.role,
+        },
+      });
+      const userIds = await filteredUsers.map((user) => user.dataValues.id);
+
+      const filteredHomepages = await Homepage.findAll({
+        include: [{ model: User, include: [Tag] }],
+        where: {
+          userId: {
+            [Op.in]: userIds,
+          },
+        },
+      });
+      console.log(filteredHomepages);
 
       return response.status(200).send(filteredHomepages);
     }
