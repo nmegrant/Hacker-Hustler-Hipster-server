@@ -71,7 +71,7 @@ router.get("/homepages/filters", async (request, response, next) => {
       clauses["userId"] = {
         [Op.in]: userIds_Tags,
       };
-    } else {
+    } else if (userIds_Role) {
       clauses["userId"] = {
         [Op.in]: userIds_Role,
       };
@@ -80,6 +80,7 @@ router.get("/homepages/filters", async (request, response, next) => {
     if (request.query.idea) {
       clauses["idea"] = request.query.idea;
     }
+    console.log(clauses);
 
     const filteredHomepages = await Homepage.findAll({
       include: [{ model: User, include: [Tag] }],
