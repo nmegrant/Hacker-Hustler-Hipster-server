@@ -20,10 +20,10 @@ router.get("/homepages", async (request, response, next) => {
   }
 });
 
-router.get("/homepages/skills", async (request, response, next) => {
+router.get("/homepages/filters", async (request, response, next) => {
   try {
     let userIds_Tags;
-    if (request.query.skills.length > 0) {
+    if (request.query.skills) {
       const filteredTags = await Tag.findAll({
         where: {
           skill: {
@@ -47,7 +47,7 @@ router.get("/homepages/skills", async (request, response, next) => {
     }
 
     let userIds_Role;
-    if (request.query.role.length > 0) {
+    if (request.query.role) {
       const filteredUsers = await User.findAll({
         where: {
           role: request.query.role,
@@ -59,17 +59,25 @@ router.get("/homepages/skills", async (request, response, next) => {
     }
 
     const clauses = {};
-    if (userIds_Tags.length > 0)
+
+    if (userIds_Role && userIds_Tags) {
+      const userIds = userIds_Role.filter((role_id) =>
+        userIds_Tags.includes(role_id)
+      );
+      clauses["userId"] = {
+        [Op.in]: userIds,
+      };
+    } else if (userIds_Tags) {
       clauses["userId"] = {
         [Op.in]: userIds_Tags,
       };
+    } else {
+      clauses["userId"] = {
+        [Op.in]: userIds_Role,
+      };
+    }
 
-    // if (userIds_Role.length > 0)
-    //   clauses["userId"] = {
-    //     [Op.in]: userIds_Role,
-    //   };
-
-    if (request.query.idea !== null) {
+    if (request.query.idea) {
       clauses["idea"] = request.query.idea;
     }
 
