@@ -12,26 +12,29 @@ router.post("/login", async (request, response, next) => {
     if (!email || !password) {
       return response
         .status(400)
-        .send("Please supply a valid email and password");
+        .send({ message: "Please supply a valid email and password" });
     }
     const user = await User.findOne({ where: { email } });
     if (!user || !bcrypt.compareSync(password, user.password)) {
       return response
         .status(400)
-        .send("No user with that email/password is incorrect.");
+        .send({ message: "No user with that email/password is incorrect." });
     }
     delete user.dataValues["password"];
     const token = toJWT({ userId: user.id });
     return response.status(200).send({ token, ...user.dataValues });
   } catch (error) {
     console.log(`Error: ${error}`);
+    return response.status(400).send({ message: "Something went wrong" });
   }
 });
 
 router.post("/signup", async (request, response) => {
   const { email, password, name, role } = request.body;
   if (!email || !name || !password || !role) {
-    return response.status(400).send("Please supply all sign up information.");
+    return response
+      .status(400)
+      .send({ message: "Please supply all sign up information." });
   }
   try {
     const newUser = await User.create({
@@ -50,7 +53,7 @@ router.post("/signup", async (request, response) => {
     if (error.name === "SequelizeUniqueConstraintError") {
       return response
         .status(400)
-        .send("There is an existing account with this email");
+        .send({ message: "There is an existing account with this email" });
     }
     return response.status(400).send("Something went wrong");
   }

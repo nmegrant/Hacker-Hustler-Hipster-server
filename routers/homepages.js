@@ -80,7 +80,6 @@ router.get("/homepages/filters", async (request, response, next) => {
     if (request.query.idea) {
       clauses["idea"] = request.query.idea;
     }
-    console.log(clauses);
 
     const filteredHomepages = await Homepage.findAll({
       include: [{ model: User, include: [Tag] }],
@@ -100,7 +99,7 @@ router.get("/homepages/:id", async (request, response, next) => {
       include: [{ model: User, include: [Tag] }, { model: Website }],
     });
     if (!homepage) {
-      return response.status(404).send("Homepage not found");
+      return response.status(404).send({ message: "Homepage Not Found" });
     } else {
       delete homepage.user.dataValues["password"];
       response.status(200).send(homepage);
