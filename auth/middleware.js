@@ -10,15 +10,17 @@ async function auth(request, response, next) {
       const data = toData(auth[1]);
       const user = await User.findByPk(data.userId);
       if (!user) {
-        return response.status(404).send("No user found");
+        return response.status(404).send({ message: "No user found" });
       }
       request.user = user;
       return next();
     } catch (error) {
-      response.send(400).send("Invalid JWT token");
+      response.send(400).send({ message: "Invalid JWT token" });
     }
   } else {
-    return response.status(401).send("Please supply valid credentials");
+    return response
+      .status(401)
+      .send({ message: "Please supply valid credentials" });
   }
 }
 
