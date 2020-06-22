@@ -55,7 +55,7 @@ router.post("/signup", async (request, response) => {
         .status(400)
         .send({ message: "There is an existing account with this email" });
     }
-    return response.status(400).send("Something went wrong");
+    return response.status(400).send({ message: "Something went wrong" });
   }
 });
 
