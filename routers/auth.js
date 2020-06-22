@@ -45,6 +45,11 @@ router.post("/signup", async (request, response) => {
     });
     const newHomepage = await Homepage.create({
       userId: newUser.id,
+      byline: "",
+      location: "",
+      experience: "",
+      bio: "",
+      idea: false,
     });
     delete newUser.dataValues["password"];
     const token = toJWT({ userId: newUser.id });
