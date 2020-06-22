@@ -26,7 +26,7 @@ describe("Auth routes", () => {
         name: "Mr. Test",
         role: "Hacker",
       };
-      const response = await request.post("/signup").send(body);
+      const response = await request.pnpost("/signup").send(body);
       expect(response.status).toBe(201);
       done();
     });
