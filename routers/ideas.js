@@ -10,7 +10,7 @@ router.get("/ideas", authMiddleware, async (request, response, next) => {
       where: { userId: request.user.id },
     });
     if (!ideas) {
-      return response.status(404).send("Homepage not found");
+      return response.status(404).send({ message: "Ideas not found" });
     }
     response.status(200).send(ideas);
   } catch (error) {
@@ -38,8 +38,11 @@ router.post("/ideas", authMiddleware, async (request, response, next) => {
 router.delete("/ideas", authMiddleware, async (request, response, next) => {
   try {
     const idea = await Idea.findByPk(request.body.id);
+    if (!idea) {
+      return response.status(404).send({ message: "Idea does not exist" });
+    }
     await idea.destroy();
-    return response.status(204).send("Idea deleted");
+    return response.status(204).send({ message: "Idea deleted" });
   } catch (error) {
     next(error);
   }

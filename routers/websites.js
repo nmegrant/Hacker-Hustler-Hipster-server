@@ -19,7 +19,7 @@ router.post("/websites", authMiddleware, async (request, response, next) => {
         await Website.create({ homepageId: homepage.id, url });
       }
     });
-    response.status(201).send("New websites added");
+    response.status(201).send({ message: "New websites added" });
   } catch (error) {
     next(error);
   }

@@ -45,6 +45,11 @@ router.post("/signup", async (request, response) => {
     });
     const newHomepage = await Homepage.create({
       userId: newUser.id,
+      byline: "",
+      location: "",
+      experience: "",
+      bio: "",
+      idea: false,
     });
     delete newUser.dataValues["password"];
     const token = toJWT({ userId: newUser.id });
@@ -55,7 +60,7 @@ router.post("/signup", async (request, response) => {
         .status(400)
         .send({ message: "There is an existing account with this email" });
     }
-    return response.status(400).send("Something went wrong");
+    return response.status(400).send({ message: "Something went wrong" });
   }
 });
 
