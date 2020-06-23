@@ -113,7 +113,18 @@ describe("Homepages routes", () => {
       done();
     });
   });
-  describe("Get /homepages/filters", () => {});
+  describe("Get /homepages/filters", () => {
+    test("GET /homepages/filters should return only hacker if role is set to hacker", async (done) => {
+      const response = await request
+        .get("/homepages/filters")
+        .query({ role: "Hipster" });
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveLength(1);
+      expect(response.body[0].user).toHaveProperty("name", "Ashley Artist");
+      expect(response.body[0]).toHaveProperty("byline", "I'm a hispter!");
+      done();
+    });
+  });
 });
 
 describe("Ideas routes", () => {
