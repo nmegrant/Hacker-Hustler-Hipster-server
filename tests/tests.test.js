@@ -259,3 +259,29 @@ describe("Skills routes", () => {
     });
   });
 });
+
+describe("Website routes", () => {
+  describe("Post /websites", () => {
+    test("POST /websites should add websites for the user", async (done) => {
+      const body = {
+        email: "arty@test.com",
+        password: "password",
+      };
+      const response = await request.post("/login").send(body);
+      const response2 = await request
+        .post("/websites")
+        .send({ urls: ["www.linkedin.com", "www.github.com"] })
+        .set("Authorization", `Bearer ${response.body.token}`);
+
+      const response3 = await request
+        .get("/mypage")
+        .set("Authorization", `Bearer ${response.body.token}`);
+
+      expect(response2.status).toBe(201);
+      expect(response3.body).toHaveProperty("websites");
+      expect(response3.body.websites).toHaveLength(2);
+      expect(response3.body.websites[0]).toHaveProperty("url");
+      done();
+    });
+  });
+});
