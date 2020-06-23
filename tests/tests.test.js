@@ -134,4 +134,51 @@ describe("Ideas routes", () => {
       done();
     });
   });
+  describe("Post /ideas", () => {
+    test("POST /ideas should add an idea and return the new idea", async (done) => {
+      const body = {
+        email: "hustler@test.com",
+        password: "test1234",
+      };
+      const response = await request.post("/login").send(body);
+      const body2 = {
+        title: "New Idea",
+        description: "Describe new idea",
+        hacker: true,
+        hipster: false,
+        hustler: false,
+        userId: 1,
+      };
+      const response2 = await request
+        .post("/ideas")
+        .send(body2)
+        .set("Authorization", `Bearer ${response.body.token}`);
+      const response3 = await request
+        .get("/ideas")
+        .set("Authorization", `Bearer ${response.body.token}`);
+      expect(response2.status).toBe(201);
+      expect(response2.body).toHaveProperty("title", "New Idea");
+      expect(response3.body).toHaveLength(2);
+      done();
+    });
+  });
+  describe("Delete /ideas", () => {
+    test("DELETE /ideas should be deleted", async (done) => {
+      const body = {
+        email: "hustler@test.com",
+        password: "test1234",
+      };
+      const response = await request.post("/login").send(body);
+      const response2 = await request
+        .delete("/ideas")
+        .send({ id: "2" })
+        .set("Authorization", `Bearer ${response.body.token}`);
+      const response3 = await request
+        .get("/ideas")
+        .set("Authorization", `Bearer ${response.body.token}`);
+      expect(response2.status).toBe(204);
+      expect(response3.body).toHaveLength(1);
+      done();
+    });
+  });
 });
