@@ -10,7 +10,7 @@ router.get("/ideas", authMiddleware, async (request, response, next) => {
       where: { userId: request.user.id },
     });
     if (!ideas) {
-      return response.status(404).send("Homepage not found");
+      return response.status(404).send({ message: "Ideas not found" });
     }
     response.status(200).send(ideas);
   } catch (error) {

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "npx nodemon index.js",
     "initdev": "npm run createDB && npm run migrate && npm run seed",
-    "pretest": "NODE_ENV=test npx sequelize-cli db:create && NODE_ENV=test npx sequelize-cli db:migrate",
+    "pretest": "NODE_ENV=test npx sequelize-cli db:create && NODE_ENV=test npx sequelize-cli db:migrate && NODE_ENV=test npx sequelize-cli db:seed:all",
     "test": "NODE_ENV=test jest --testPathPattern='./tests/.*\\.test\\.js$' --detectOpenHandles --runInBand --testTimeout=10000 --forceExit",
     "test-done": "NODE_ENV=test npx sequelize-cli db:drop"
   },
