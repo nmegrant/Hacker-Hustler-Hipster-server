@@ -182,3 +182,21 @@ describe("Ideas routes", () => {
     });
   });
 });
+
+describe("MyPage routes", () => {
+  describe("Get /mypages", () => {
+    test("GET /mypages should an object with homepage info", async (done) => {
+      const body = {
+        email: "arty@test.com",
+        password: "password",
+      };
+      const response = await request.post("/login").send(body);
+      const response2 = await request
+        .get("/mypage")
+        .set("Authorization", `Bearer ${response.body.token}`);
+      expect(response2.status).toBe(200);
+      expect(response2.body).toHaveProperty("bio");
+      done();
+    });
+  });
+});
