@@ -115,3 +115,23 @@ describe("Homepages routes", () => {
   });
   describe("Get /homepages/filters", () => {});
 });
+
+describe("Ideas routes", () => {
+  describe("Get /ideas", () => {
+    test("GET /ideas should return an array of idea objects", async (done) => {
+      const body = {
+        email: "hustler@test.com",
+        password: "test1234",
+      };
+      const response = await request.post("/login").send(body);
+      const response2 = await request
+        .get("/ideas")
+        .set("Authorization", `Bearer ${response.body.token}`);
+      expect(response.status).toBe(200);
+      expect(response2.status).toBe(200);
+      expect(response2.body).toHaveLength(1);
+      expect(response2.body[0]).toHaveProperty("title");
+      done();
+    });
+  });
+});
