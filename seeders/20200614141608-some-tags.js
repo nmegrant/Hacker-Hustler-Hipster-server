@@ -131,7 +131,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          skill: "Cypruss",
+          skill: "Cypress",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
