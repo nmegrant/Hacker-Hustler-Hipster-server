@@ -195,7 +195,33 @@ describe("MyPage routes", () => {
         .get("/mypage")
         .set("Authorization", `Bearer ${response.body.token}`);
       expect(response2.status).toBe(200);
-      expect(response2.body).toHaveProperty("bio");
+      expect(response2.body).toHaveProperty("bio", "I love making art!");
+      expect(response2.body).toHaveProperty("user");
+      expect(response2.body).toHaveProperty("websites");
+      done();
+    });
+  });
+  describe("Patch /mypages", () => {
+    test("PATCH /mypages should update homepage info", async (done) => {
+      const body = {
+        email: "test@test.com",
+        password: "1234",
+      };
+      const response = await request.post("/login").send(body);
+      const response2 = await request
+        .patch("/mypage")
+        .send({
+          bio: "New bio",
+          experience: "New experience",
+          byline: "New byline",
+          location: "New loaction",
+          idea: true,
+        })
+        .set("Authorization", `Bearer ${response.body.token}`);
+      expect(response2.status).toBe(200);
+      expect(response2.body).toHaveProperty("bio", "New bio");
+      expect(response2.body).toHaveProperty("experience", "New experience");
+      expect(response2.body).toHaveProperty("userId", 5);
       done();
     });
   });
