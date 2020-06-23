@@ -226,3 +226,32 @@ describe("MyPage routes", () => {
     });
   });
 });
+
+describe("Skills routes", () => {
+  describe("Get /skills", () => {
+    test("GET /skills should a long array of skill objects", async (done) => {
+      const response = await request.get("/skills");
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveLength(33);
+      expect(response.body[0]).toHaveProperty("skill");
+      done();
+    });
+  });
+  describe("Get /skills/user", () => {
+    // test("GET /skills/user should skills for the user", async (done) => {
+    //   const body = {
+    //     email: "arty@test.com",
+    //     password: "password",
+    //   };
+    //   const response = await request.post("/login").send(body);
+    //   const response2 = await request
+    //     .get("/mypage")
+    //     .set("Authorization", `Bearer ${response.body.token}`);
+    //   expect(response2.status).toBe(200);
+    //   expect(response2.body).toHaveProperty("bio", "I love making art!");
+    //   expect(response2.body).toHaveProperty("user");
+    //   expect(response2.body).toHaveProperty("websites");
+    //   done();
+    // });
+  });
+});
