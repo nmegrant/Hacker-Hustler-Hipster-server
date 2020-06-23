@@ -296,5 +296,13 @@ describe("auth middleware", () => {
       expect(response.body.message).toBe("Invalid JWT token");
       done();
     });
+    test("Should return request for valid credentials if no token sent", async (done) => {
+      const response = await request
+        .get("/mypage")
+        .set("Authorization", `Bearers `);
+      expect(response.status).toBe(401);
+      expect(response.body.message).toBe("Please supply valid credentials");
+      done();
+    });
   });
 });
