@@ -114,7 +114,7 @@ describe("Homepages routes", () => {
     });
   });
   describe("Get /homepages/filters", () => {
-    test("GET /homepages/filters should return only hacker if role is set to hacker", async (done) => {
+    test("GET /homepages/filters should return only hipster user if role is set to hipster", async (done) => {
       const response = await request
         .get("/homepages/filters")
         .query({ role: "Hipster" });
@@ -122,6 +122,36 @@ describe("Homepages routes", () => {
       expect(response.body).toHaveLength(1);
       expect(response.body[0].user).toHaveProperty("name", "Ashley Artist");
       expect(response.body[0]).toHaveProperty("byline", "I'm a hispter!");
+      done();
+    });
+    test("GET /homepages/filters should return only user with idea", async (done) => {
+      const response = await request
+        .get("/homepages/filters")
+        .query({ idea: true });
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveLength(1);
+      expect(response.body[0].user).toHaveProperty("name", "Chad Moneybags");
+      expect(response.body[0]).toHaveProperty("byline", "I'm a hustler!");
+      done();
+    });
+    test("GET /homepages/filters should return only users with the skills", async (done) => {
+      const response = await request
+        .get("/homepages/filters")
+        .query({ skills: ["Javascript", "C++"] });
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveLength(1);
+      expect(response.body[0].user).toHaveProperty("name", "Sam Nerd");
+      expect(response.body[0]).toHaveProperty("byline", "I'm a hacker!");
+      done();
+    });
+    test("GET /homepages/filters should return only users with the skills part 2", async (done) => {
+      const response = await request
+        .get("/homepages/filters")
+        .query({ skills: ["Market Research", "Project Management"] });
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveLength(1);
+      expect(response.body[0].user).toHaveProperty("name", "Chad Moneybags");
+      expect(response.body[0]).toHaveProperty("byline", "I'm a hustler!");
       done();
     });
   });
@@ -229,10 +259,15 @@ describe("MyPage routes", () => {
           idea: true,
         })
         .set("Authorization", `Bearer ${response.body.token}`);
+      const response3 = await request
+        .get("/homepages/filters")
+        .query({ idea: true });
+
       expect(response2.status).toBe(200);
       expect(response2.body).toHaveProperty("bio", "New bio");
       expect(response2.body).toHaveProperty("experience", "New experience");
       expect(response2.body).toHaveProperty("userId", 5);
+      expect(response3.body).toHaveLength(2);
       done();
     });
   });
