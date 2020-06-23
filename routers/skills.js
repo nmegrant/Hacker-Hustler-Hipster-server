@@ -26,7 +26,7 @@ router.post("/skills/user", authMiddleware, async (request, response, next) => {
         tagId: tag.dataValues.id,
       });
     });
-    response.status(201).send("Skills added");
+    response.status(201).send({ message: "Skills added" });
   } catch (error) {
     next(error);
   }

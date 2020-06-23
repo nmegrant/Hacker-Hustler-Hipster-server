@@ -238,20 +238,24 @@ describe("Skills routes", () => {
     });
   });
   describe("Get /skills/user", () => {
-    // test("GET /skills/user should skills for the user", async (done) => {
-    //   const body = {
-    //     email: "arty@test.com",
-    //     password: "password",
-    //   };
-    //   const response = await request.post("/login").send(body);
-    //   const response2 = await request
-    //     .get("/mypage")
-    //     .set("Authorization", `Bearer ${response.body.token}`);
-    //   expect(response2.status).toBe(200);
-    //   expect(response2.body).toHaveProperty("bio", "I love making art!");
-    //   expect(response2.body).toHaveProperty("user");
-    //   expect(response2.body).toHaveProperty("websites");
-    //   done();
-    // });
+    test("GET /skills/user should add skills for the user", async (done) => {
+      const body = {
+        email: "arty@test.com",
+        password: "password",
+      };
+      const response = await request.post("/login").send(body);
+      const response2 = await request
+        .post("/skills/user")
+        .send({ skills: ["Python", "PHP"] })
+        .set("Authorization", `Bearer ${response.body.token}`);
+      const response3 = await request
+        .get("/mypage")
+        .set("Authorization", `Bearer ${response.body.token}`);
+
+      expect(response2.status).toBe(201);
+      expect(response3.body.user).toHaveProperty("tags");
+      expect(response3.body.user.tags).toHaveLength(4);
+      done();
+    });
   });
 });
