@@ -304,5 +304,18 @@ describe("auth middleware", () => {
       expect(response.body.message).toBe("Please supply valid credentials");
       done();
     });
+    test("Should return request for valid credentials if no token sent", async (done) => {
+      const body = {
+        email: "arty@test.com",
+        password: "password",
+      };
+      const response = await request.post("/login").send(body);
+      const response2 = await request
+        .get("/mypage")
+        .set("Authorization", `${response.body.token}`);
+      expect(response2.status).toBe(401);
+      expect(response2.body.message).toBe("Please supply valid credentials");
+      done();
+    });
   });
 });
