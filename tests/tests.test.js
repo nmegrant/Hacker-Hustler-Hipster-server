@@ -285,3 +285,16 @@ describe("Website routes", () => {
     });
   });
 });
+
+describe("auth middleware", () => {
+  describe("auth middleware", () => {
+    test("Should return invalid JWT token when random token sent", async (done) => {
+      const response = await request
+        .get("/mypage")
+        .set("Authorization", `Bearer ${"111"}`);
+      expect(response.status).toBe(400);
+      expect(response.body.message).toBe("Invalid JWT token");
+      done();
+    });
+  });
+});
