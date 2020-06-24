@@ -14,12 +14,14 @@ router.post("/websites", authMiddleware, async (request, response, next) => {
     if (!homepage) {
       return response.status(404).send("Homeage not found");
     }
-    urls.forEach(async (url) => {
-      if (url.length !== 0) {
-        await Website.create({ homepageId: homepage.id, url });
-      }
-    });
-    response.status(201).send({ message: "New websites added" });
+    const newWebsites = await Promise.all(
+      urls.map(async (url) => {
+        if (url.length !== 0) {
+          return await Website.create({ homepageId: homepage.id, url });
+        }
+      })
+    );
+    response.status(201).send(newWebsites);
   } catch (error) {
     next(error);
   }
