@@ -17,7 +17,7 @@ router.get("/skills", async (request, response, next) => {
 router.post("/skills/user", authMiddleware, async (request, response, next) => {
   try {
     const { skills } = request.body;
-    skills.map(async (skill) => {
+    const userSkills = skills.map(async (skill) => {
       const tag = await Skill.findOne({
         where: { skill: skill },
       });
@@ -26,7 +26,8 @@ router.post("/skills/user", authMiddleware, async (request, response, next) => {
         tagId: tag.dataValues.id,
       });
     });
-    response.status(201).send({ message: "Skills added" });
+    console.log(userSkills);
+    response.status(201).send({ userSkills: [...userSkills] });
   } catch (error) {
     next(error);
   }

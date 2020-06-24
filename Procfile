@@ -1,1 +1,1 @@
-release: npx sequelize-cli db:migrate && npx sequelize db:seed:all
+release: npx sequelize-cli db:migrate 
