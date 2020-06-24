@@ -22,10 +22,11 @@ router.post("/skills/user", authMiddleware, async (request, response, next) => {
         const tag = await Skill.findOne({
           where: { skill: skill },
         });
-        return await UserSkill.create({
+        await UserSkill.create({
           userId: request.user.id,
           tagId: tag.dataValues.id,
         });
+        return tag;
       })
     );
     response.status(201).send(newUserSkills);
