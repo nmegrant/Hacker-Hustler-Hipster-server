@@ -339,6 +339,8 @@ describe("Website routes", () => {
         .set("Authorization", `Bearer ${response.body.token}`);
 
       expect(response2.status).toBe(201);
+      expect(response2.body).toHaveLength(2);
+      expect(response2.body[0].url).toEqual("www.linkedin.com");
       expect(response3.body).toHaveProperty("websites");
       expect(response3.body.websites).toHaveLength(2);
       expect(response3.body.websites[0]).toHaveProperty("url");
