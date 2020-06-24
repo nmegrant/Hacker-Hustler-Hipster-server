@@ -101,7 +101,7 @@ describe("Homepages routes", () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty(
         "experience",
-        "I've worked for Amazon, Facebook, and Google!"
+        "Maecenas accumsan neque justo. Morbi mattis sodales lorem sed tincidunt. In hac habitasse platea dictumst. In sodales nisl et dolor consectetur fringilla vitae porta est. In hac habitasse platea dictumst. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Sed ligula lorem, convallis ac diam id, accumsan ullamcorper libero."
       );
       expect(response.body).toHaveProperty("websites");
       done();
@@ -121,7 +121,10 @@ describe("Homepages routes", () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveLength(1);
       expect(response.body[0].user).toHaveProperty("name", "Ashley Artist");
-      expect(response.body[0]).toHaveProperty("byline", "I'm a hispter!");
+      expect(response.body[0]).toHaveProperty(
+        "byline",
+        "I'm the creative type"
+      );
       done();
     });
     test("GET /homepages/filters should return only user with idea", async (done) => {
@@ -131,7 +134,10 @@ describe("Homepages routes", () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveLength(1);
       expect(response.body[0].user).toHaveProperty("name", "Chad Moneybags");
-      expect(response.body[0]).toHaveProperty("byline", "I'm a hustler!");
+      expect(response.body[0]).toHaveProperty(
+        "byline",
+        "Looking for brilliant people to work on my genius idea"
+      );
       done();
     });
     test("GET /homepages/filters should return only users with the skills", async (done) => {
@@ -141,7 +147,10 @@ describe("Homepages routes", () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveLength(1);
       expect(response.body[0].user).toHaveProperty("name", "Sam Nerd");
-      expect(response.body[0]).toHaveProperty("byline", "I'm a hacker!");
+      expect(response.body[0]).toHaveProperty(
+        "byline",
+        "I'm a coding rockstar"
+      );
       done();
     });
     test("GET /homepages/filters should return only users with the skills part 2", async (done) => {
@@ -151,7 +160,10 @@ describe("Homepages routes", () => {
       expect(response.status).toBe(200);
       expect(response.body).toHaveLength(1);
       expect(response.body[0].user).toHaveProperty("name", "Chad Moneybags");
-      expect(response.body[0]).toHaveProperty("byline", "I'm a hustler!");
+      expect(response.body[0]).toHaveProperty(
+        "byline",
+        "Looking for brilliant people to work on my genius idea"
+      );
       done();
     });
   });
@@ -236,7 +248,10 @@ describe("MyPage routes", () => {
         .get("/mypage")
         .set("Authorization", `Bearer ${response.body.token}`);
       expect(response2.status).toBe(200);
-      expect(response2.body).toHaveProperty("bio", "I love making art!");
+      expect(response2.body).toHaveProperty(
+        "bio",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean maximus faucibus turpis quis fermentum. Etiam malesuada elit vitae est scelerisque facilisis. Donec vel euismod leo, id faucibus ex. Nullam tempus luctus neque, eget fermentum velit. Donec aliquam vestibulum pharetra. Praesent sem eros, viverra non justo at, iaculis sagittis odio. Aenean lorem mauris, sagittis et faucibus in, cursus eget justo. Vestibulum eleifend nunc suscipit fringilla eleifend. Aenean vitae eros faucibus, eleifend quam eget, ornare tellus. Nullam in dignissim ipsum. Ut auctor consectetur libero. Sed ut efficitur quam. Cras venenatis, est aliquam tristique elementum, turpis sem blandit tellus, id tristique velit nibh in magna. Nunc id ipsum dui. Cras at tellus venenatis, hendrerit urna nec, vehicula sem. Cras iaculis euismod pulvinar."
+      );
       expect(response2.body).toHaveProperty("user");
       expect(response2.body).toHaveProperty("websites");
       done();
