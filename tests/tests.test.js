@@ -312,7 +312,7 @@ describe("Skills routes", () => {
       const response3 = await request
         .get("/mypage")
         .set("Authorization", `Bearer ${response.body.token}`);
-
+      expect(response2.body.userSkills).toHaveLength(2);
       expect(response2.status).toBe(201);
       expect(response3.body.user).toHaveProperty("tags");
       expect(response3.body.user.tags).toHaveLength(4);
