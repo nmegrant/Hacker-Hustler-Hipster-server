@@ -1,4 +1,4 @@
-# Hacker-Hustler-Hipster-server
+# Hacker-Hustler-Hipster-server [![Codeship Status for nmegrant/Hacker-Hustler-Hipster-server](https://app.codeship.com/projects/4cd98ac0-97a5-0138-34ac-7a5d77a8b96c/status?branch=master)](https://app.codeship.com/projects/400815)
 Backend REST API for Hacker-Hustler-Hipster app using postgres and express.js.
 
 This is the server repository for Hacker Hustler Hipster. For more details please refer to the README in the client repository [here](https://github.com/nmegrant/Hacker-Hustler-Hipster-client/blob/master/README.md)
