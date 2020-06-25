@@ -96,7 +96,7 @@ describe("Homepages routes", () => {
     });
   });
   describe("Get /homepages/:id", () => {
-    test("GET /homepages should homepage object", async (done) => {
+    test("GET /homepages/:id should homepage object for the user with that id", async (done) => {
       const response = await request.get("/homepages/2");
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty(
@@ -106,7 +106,7 @@ describe("Homepages routes", () => {
       expect(response.body).toHaveProperty("websites");
       done();
     });
-    test("should respond with 404 if the homepage is not found", async (done) => {
+    test("GET /homepages/:id should respond with 404 if the homepage is not found", async (done) => {
       const response = await request.get("/homepages/99");
       expect(response.status).toEqual(404);
       expect(response.body.message).toEqual("Homepage Not Found");
@@ -127,7 +127,7 @@ describe("Homepages routes", () => {
       );
       done();
     });
-    test("GET /homepages/filters should return only user with idea", async (done) => {
+    test("GET /homepages/filters should return only user with idea if idea selected", async (done) => {
       const response = await request
         .get("/homepages/filters")
         .query({ idea: true });
@@ -140,7 +140,7 @@ describe("Homepages routes", () => {
       );
       done();
     });
-    test("GET /homepages/filters should return only users with the skills", async (done) => {
+    test("GET /homepages/filters should return only users with the skills selected", async (done) => {
       const response = await request
         .get("/homepages/filters")
         .query({ skills: ["Javascript", "C++"] });
@@ -216,7 +216,7 @@ describe("Ideas routes", () => {
     });
   });
   describe("Delete /ideas", () => {
-    test("DELETE /ideas should be deleted", async (done) => {
+    test("DELETE /ideas should delete the selected idea", async (done) => {
       const body = {
         email: "hustler@test.com",
         password: "test1234",
@@ -258,7 +258,7 @@ describe("MyPage routes", () => {
     });
   });
   describe("Patch /mypages", () => {
-    test("PATCH /mypages should update homepage info", async (done) => {
+    test("PATCH /mypages should update homepage info for that user", async (done) => {
       const body = {
         email: "test@test.com",
         password: "1234",
@@ -290,7 +290,7 @@ describe("MyPage routes", () => {
 
 describe("Skills routes", () => {
   describe("Get /skills", () => {
-    test("GET /skills should a long array of skill objects", async (done) => {
+    test("GET /skills should return a long array of all skill objects", async (done) => {
       const response = await request.get("/skills");
       expect(response.status).toBe(200);
       expect(response.body).toHaveLength(33);
@@ -299,7 +299,7 @@ describe("Skills routes", () => {
     });
   });
   describe("Get /skills/user", () => {
-    test("GET /skills/user should add skills for the user", async (done) => {
+    test("GET /skills/user should add skills for the user and return an array with the new skills objects", async (done) => {
       const body = {
         email: "arty@test.com",
         password: "password",
@@ -323,7 +323,7 @@ describe("Skills routes", () => {
 
 describe("Website routes", () => {
   describe("Post /websites", () => {
-    test("POST /websites should add websites for the user", async (done) => {
+    test("POST /websites should add websites for the user and return an array with the new skills objects", async (done) => {
       const body = {
         email: "arty@test.com",
         password: "password",
@@ -367,7 +367,7 @@ describe("auth middleware", () => {
       expect(response.body.message).toBe("Please supply valid credentials");
       done();
     });
-    test("Should return request for valid credentials if no token sent", async (done) => {
+    test("Should return request for valid credentials if no Bearers sent", async (done) => {
       const body = {
         email: "arty@test.com",
         password: "password",
