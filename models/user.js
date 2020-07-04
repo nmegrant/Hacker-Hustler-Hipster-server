@@ -22,7 +22,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       darkMode: {
         type: DataTypes.BOOLEAN,
-        allowNull: true,
         defaultValue: false,
       },
     },
