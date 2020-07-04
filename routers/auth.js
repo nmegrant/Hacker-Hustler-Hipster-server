@@ -73,7 +73,7 @@ router.patch("/user/darkMode", authMiddleware, async (request, response) => {
   const { darkMode } = request.body;
   try {
     const user = await User.findByPk(request.user.id);
-    const newUser = await user.update({ ...user, darkMode });
+    await user.update({ ...user, darkMode });
     return response.status(200).send(darkMode);
   } catch (error) {
     return response
