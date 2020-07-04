@@ -12,6 +12,7 @@ async function auth(request, response, next) {
       if (!user) {
         return response.status(404).send({ message: "No user found" });
       }
+      console.log(user);
       request.user = user;
       return next();
     } catch (error) {
