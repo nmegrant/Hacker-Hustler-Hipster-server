@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      darkMode: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
     },
     {}
   );
