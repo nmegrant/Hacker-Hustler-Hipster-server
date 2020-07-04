@@ -5,6 +5,7 @@ module.exports = {
     await queryInterface.addColumn("users", "darkMode", {
       type: Sequelize.BOOLEAN,
       allowNull: true,
+      defaultValue: false,
     });
   },
 
