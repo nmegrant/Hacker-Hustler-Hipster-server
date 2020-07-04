@@ -14,6 +14,7 @@ module.exports = {
           role: "Hustler",
           createdAt: new Date(),
           updatedAt: new Date(),
+          darkMode: false,
         },
         {
           name: "Sam Nerd",
@@ -22,6 +23,7 @@ module.exports = {
           role: "Hacker",
           createdAt: new Date(),
           updatedAt: new Date(),
+          darkMode: true,
         },
         {
           name: "Ashley Artist",
@@ -30,6 +32,7 @@ module.exports = {
           role: "Hipster",
           createdAt: new Date(),
           updatedAt: new Date(),
+          darkMode: false,
         },
       ],
       {}
