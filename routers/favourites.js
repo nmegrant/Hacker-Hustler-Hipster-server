@@ -4,19 +4,19 @@ const authMiddleware = require("../auth/middleware");
 
 const router = new Router();
 
-router.get("/favourites", authMiddleware, async (request, repsonse, next) => {
-  try {
-    const favouriteList = await Favourite.findAll({
-      where: { userId: request.user.id },
-    });
-    if (!favouriteList) {
-      return response.status(404).send({ message: "No favourites yet." });
-    }
-    return response.status(200).send(favouriteList);
-  } catch (error) {
-    next(error);
-  }
-});
+// router.get("/favourites", authMiddleware, async (request, repsonse, next) => {
+//   try {
+//     const favouriteList = await Favourite.findAll({
+//       where: { userId: request.user.id },
+//     });
+//     if (!favouriteList) {
+//       return response.status(404).send({ message: "No favourites yet." });
+//     }
+//     return response.status(200).send(favouriteList);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 router.post("/favourites", authMiddleware, async (request, response, next) => {
   const { id } = request.body;
