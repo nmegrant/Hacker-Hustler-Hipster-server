@@ -35,7 +35,13 @@ router.delete(
   "/favourites",
   authMiddleware,
   async (request, response, next) => {
+    const { id } = request.body;
     try {
+      const oldFavourite = await Favourite.findAll({
+        where: { userId: request.user.id, favouriteId: id },
+      });
+      await oldFavourite.destroy();
+      return response.status(204).send({ message: "Removed from favourites" });
     } catch (error) {
       next(error);
     }
