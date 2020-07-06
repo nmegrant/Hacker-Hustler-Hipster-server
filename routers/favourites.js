@@ -1,4 +1,4 @@
-const { Router, response } = require("express");
+const { Router } = require("express");
 const Favourite = require("../models").favourite;
 const authMiddleware = require("../auth/middleware");
 
@@ -37,10 +37,10 @@ router.delete(
   async (request, response, next) => {
     const { id } = request.body;
     try {
-      const oldFavourite = await Favourite.findAll({
+      const favourite = await Favourite.findOne({
         where: { userId: request.user.id, favouriteId: id },
       });
-      await oldFavourite.destroy();
+      await favourite.destroy();
       const favouriteList = await Favourite.findAll({
         where: { userId: request.user.id },
       });
