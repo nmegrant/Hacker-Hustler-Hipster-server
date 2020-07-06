@@ -3,6 +3,7 @@ const { toJWT, toData } = require("../auth/jwt");
 const bcrypt = require("bcrypt");
 const User = require("../models").user;
 const Homepage = require("../models").homepage;
+const Favourite = require("../models").favourite;
 const authMiddleware = require("../auth/middleware");
 const router = new Router();
 
@@ -66,7 +67,10 @@ router.post("/signup", async (request, response) => {
 
 router.get("/user", authMiddleware, async (request, response) => {
   delete request.user.dataValues["password"];
-  response.status(200).send({ ...request.user.dataValues });
+  const favourites = await Favourite.findAll({
+    where: { userId: request.user.id },
+  });
+  response.status(200).send({ ...request.user.dataValues, favourites });
 });
 
 router.patch("/user/darkMode", authMiddleware, async (request, response) => {
