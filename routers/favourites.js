@@ -41,7 +41,10 @@ router.delete(
         where: { userId: request.user.id, favouriteId: id },
       });
       await oldFavourite.destroy();
-      return response.status(204).send({ message: "Removed from favourites" });
+      const favouriteList = await Favourite.findAll({
+        where: { userId: request.user.id },
+      });
+      return response.status(204).send(favouriteList);
     } catch (error) {
       next(error);
     }
