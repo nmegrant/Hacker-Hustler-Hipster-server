@@ -21,6 +21,9 @@ const router = new Router();
 router.post("/favourites", authMiddleware, async (request, response, next) => {
   const { id } = request.body;
   try {
+    if (id === request.user.id) {
+      return response.status(400).send({ message: "You can't like yourself!" });
+    }
     const favouriteList = await Favourite.create({
       userId: request.user.id,
       favouriteId: id,
