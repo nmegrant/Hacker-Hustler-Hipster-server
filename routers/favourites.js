@@ -19,11 +19,11 @@ router.get("/favourites", authMiddleware, async (request, repsonse, next) => {
 });
 
 router.post("/favourites", authMiddleware, async (request, response, next) => {
-  const { favouriteId } = request.body;
+  const { id } = request.body;
   try {
     await Favourite.create({
       userId: request.user.userId,
-      favouriteId: favouriteId,
+      favouriteId: id,
     });
     return response.status(201).send();
   } catch (error) {
