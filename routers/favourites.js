@@ -44,7 +44,7 @@ router.delete(
       const favouriteList = await Favourite.findAll({
         where: { userId: request.user.id },
       });
-      return response.status(204).send(favouriteList);
+      return response.status(200).send(favouriteList);
     } catch (error) {
       next(error);
     }
