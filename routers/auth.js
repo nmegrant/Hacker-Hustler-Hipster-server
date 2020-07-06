@@ -22,8 +22,11 @@ router.post("/login", async (request, response, next) => {
         .send({ message: "No user with that email/password is incorrect." });
     }
     delete user.dataValues["password"];
+    const favourites = await Favourite.findAll({
+      where: { userId: user.id },
+    });
     const token = toJWT({ userId: user.id });
-    return response.status(200).send({ token, ...user.dataValues });
+    return response.status(200).send({ token, ...user.dataValues, favourites });
   } catch (error) {
     console.log(`Error: ${error}`);
     return response.status(400).send({ message: "Something went wrong" });
