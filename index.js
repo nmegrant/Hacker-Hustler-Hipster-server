@@ -7,6 +7,7 @@ const mypage = require("./routers/mypage");
 const websites = require("./routers/websites");
 const ideas = require("./routers/ideas");
 const skills = require("./routers/skills");
+const favourites = require("./routers/favourites");
 
 const bodyParserMiddleWare = express.json();
 app.use(bodyParserMiddleWare);
@@ -20,6 +21,7 @@ app.use(mypage);
 app.use(websites);
 app.use(ideas);
 app.use(skills);
+app.use(favourites);
 
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);

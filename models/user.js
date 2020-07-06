@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
   user.associate = function (models) {
     user.hasOne(models.homepage);
     user.hasMany(models.idea);
+    user.hasMany(models.favourite);
     user.belongsToMany(models.tag, {
       through: "userTags",
       foreignKey: "userId",

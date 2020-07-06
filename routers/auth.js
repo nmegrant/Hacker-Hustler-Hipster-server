@@ -3,6 +3,7 @@ const { toJWT, toData } = require("../auth/jwt");
 const bcrypt = require("bcrypt");
 const User = require("../models").user;
 const Homepage = require("../models").homepage;
+const Favourite = require("../models").favourite;
 const authMiddleware = require("../auth/middleware");
 const router = new Router();
 
@@ -21,8 +22,11 @@ router.post("/login", async (request, response, next) => {
         .send({ message: "No user with that email/password is incorrect." });
     }
     delete user.dataValues["password"];
+    const favourites = await Favourite.findAll({
+      where: { userId: user.id },
+    });
     const token = toJWT({ userId: user.id });
-    return response.status(200).send({ token, ...user.dataValues });
+    return response.status(200).send({ token, ...user.dataValues, favourites });
   } catch (error) {
     console.log(`Error: ${error}`);
     return response.status(400).send({ message: "Something went wrong" });
@@ -66,7 +70,10 @@ router.post("/signup", async (request, response) => {
 
 router.get("/user", authMiddleware, async (request, response) => {
   delete request.user.dataValues["password"];
-  response.status(200).send({ ...request.user.dataValues });
+  const favourites = await Favourite.findAll({
+    where: { userId: request.user.id },
+  });
+  response.status(200).send({ ...request.user.dataValues, favourites });
 });
 
 router.patch("/user/darkMode", authMiddleware, async (request, response) => {
