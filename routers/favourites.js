@@ -1,22 +1,28 @@
 const { Router } = require("express");
 const Favourite = require("../models").favourite;
+const User = require("../models").user;
 const authMiddleware = require("../auth/middleware");
 
 const router = new Router();
 
-// router.get("/favourites", authMiddleware, async (request, repsonse, next) => {
-//   try {
-//     const favouriteList = await Favourite.findAll({
-//       where: { userId: request.user.id },
-//     });
-//     if (!favouriteList) {
-//       return response.status(404).send({ message: "No favourites yet." });
-//     }
-//     return response.status(200).send(favouriteList);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+router.get("/favourites", authMiddleware, async (request, response, next) => {
+  try {
+    const { favs } = request.query;
+    if (favs) {
+      const favouriteList = await Promise.all(
+        favs.map(async (user) => {
+          return await User.findByPk(JSON.parse(user).favouriteId);
+        })
+      );
+      if (!favouriteList) {
+        return response.status(404).send({ message: "No favourites yet." });
+      }
+      return response.status(200).send([...favouriteList]);
+    }
+  } catch (error) {
+    next(error);
+  }
+});
 
 router.post("/favourites", authMiddleware, async (request, response, next) => {
   const { id } = request.body;
