@@ -20,12 +20,17 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      darkMode: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
     },
     {}
   );
   user.associate = function (models) {
     user.hasOne(models.homepage);
     user.hasMany(models.idea);
+    user.hasMany(models.favourite);
     user.belongsToMany(models.tag, {
       through: "userTags",
       foreignKey: "userId",

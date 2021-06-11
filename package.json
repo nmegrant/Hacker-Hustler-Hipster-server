@@ -4,16 +4,32 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "npx nodemon index.js",
+    "initdev": "npm run createDB && npm run migrate && npm run seed",
+    "pretest": "NODE_ENV=test npx sequelize-cli db:create && NODE_ENV=test npx sequelize-cli db:migrate && NODE_ENV=test npx sequelize-cli db:seed:all",
+    "test": "NODE_ENV=test jest --testPathPattern='./tests/.*\\.test\\.js$' --detectOpenHandles --runInBand --testTimeout=10000 --forceExit",
+    "test-done": "NODE_ENV=test npx sequelize-cli db:drop",
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.1.0",
     "nodemon": "^2.0.4",
     "pg": "^8.2.1",
     "sequelize": "^5.21.12",
-    "sequelize-cli": "^5.5.1"
+    "sequelize-cli": "^5.5.1",
+    "lodash": ">=4.17.21"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.2",
+    "jest": "^26.0.1",
+    "supertest": "^4.0.2"
   }
 }

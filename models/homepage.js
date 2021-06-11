@@ -3,14 +3,11 @@ module.exports = (sequelize, DataTypes) => {
   const homepage = sequelize.define(
     "homepage",
     {
-      byline: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-      },
+      byline: DataTypes.TEXT,
       location: DataTypes.STRING,
       experience: DataTypes.TEXT,
       bio: DataTypes.TEXT,
-      idea: { type: DataTypes.BOOLEAN, allowNull: false },
+      idea: DataTypes.TEXT,
     },
     {}
   );
